@@ -1,5 +1,5 @@
 # Graph
-Ready-to-use graph module 
+Ready-to-use graph module for python files
 
 ## Motivation
 
