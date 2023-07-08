@@ -1,10 +1,11 @@
 
+
 class Graph:
     def __init__(self):
         self.graph = dict()
         self.length = dict()
 
-
+# inserting node a,node b with connection a->b, length (if given) c
     def insert_node(self,a,b,c = 0):
         if (a in self.graph) :
             if b not in self.graph[a]:  
@@ -15,7 +16,7 @@ class Graph:
             self.length[a] = []
             self.insert_node(a,b,c)
 
-
+#Length between nodes a nd b
     def lengthf(self,a,b):
         ind = 0
         for i in self.graph[a]:
@@ -23,7 +24,7 @@ class Graph:
                 return self.length[a][ind]
             ind+=1
 
-
+#Finding shortest path between a and b if flag is `False` else finding the distance between all paths from a to b
     def short(self,start,end,flag = False):
         self.leng = dict()
         self.spath(start,end)
@@ -35,14 +36,14 @@ class Graph:
             print(*self.leng[index],sep = '->')
             print('distance = ',index)
 
-
+#Called by `short` to display all the lengths between a and b 
     def all_length(self,leng,a,b):
             print('all paths from %s to %s are: ' % (a,b))
             for i in leng:
                 print(*leng[i],sep = '->')
                 print('distance = ',i)
 
-
+#Called by `short` to find all the paths between a and b
     def spath(self,start,end,visited = None):
         if visited is None:
             visited = []
@@ -68,19 +69,19 @@ class Graph:
             visited = self.spath(next,end,visited)
         return visited[:-1]
     
-
+#Prints all the travesal paths 
     def all_Traversal(self):
         for i in self.graph:
             print('\n',i,':',sep = '')
             self.Traversal(i)
 
-
+#prints all connections between node
     def path(self):
         for i in self.graph:
             for j in range(len(self.graph[i])):
                 print(i,self.graph[i][j],self.length[i][j],sep = '->')
             
-
+#prints all the possible traversal from node 'start'
     def Traversal(self,start,visited = None):
         if visited is None:
             visited = []
@@ -99,3 +100,5 @@ class Graph:
         for next in self.graph[start]:
             visited = self.Traversal(next,visited)
         return visited[:-1]
+
+
