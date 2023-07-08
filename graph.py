@@ -1,7 +1,9 @@
+
 class Graph:
     def __init__(self):
         self.graph = dict()
         self.length = dict()
+
 
     def insert_node(self,a,b,c = 0):
         if (a in self.graph) :
@@ -13,49 +15,87 @@ class Graph:
             self.length[a] = []
             self.insert_node(a,b,c)
 
+
     def lengthf(self,a,b):
         ind = 0
         for i in self.graph[a]:
             if i==b:
-                return ind
+                return self.length[a][ind]
             ind+=1
 
-    def shrtPath(self,start,end,visited):
-        l = []
-        if end in self.graph[start]:
-            return self.lengthf(start,end)
-        elif start in visited:
-            return 0
+
+    def short(self,start,end,flag = False):
+        self.leng = dict()
+        self.spath(start,end)
+        index = min(self.leng)
+        if flag:
+            self.all_length(self.leng,start,end)
         else:
-            for i in self.graph[start]:
-                su = self.lengthf(start,i)
-                x = self.shrtPath(i,end)
-                su +=x 
-                l.append(su)
+            print('shortest path is : ',end = '')
+            print(*self.leng[index],sep = '->')
+            print('distance = ',index)
+
+
+    def all_length(self,leng,a,b):
+            print('all paths from %s to %s are: ' % (a,b))
+            for i in leng:
+                print(*leng[i],sep = '->')
+                print('distance = ',i)
+
+
+    def spath(self,start,end,visited = None):
+        if visited is None:
+            visited = []
+
+        if start in visited:
+            return visited
+        else:
+            visited.append(start)
+
+        if start == end:
+            su = []
+            for i in range(1,len(visited)):
+                su.append(self.lengthf(visited[i-1],visited[i]))
+            self.leng[sum(su)]=[]
+            for i in visited:
+                self.leng[sum(su)].append(i)
+
+        if start not in self.graph:
+            visited = visited[:-1]
+            return visited
+    
+        for next in self.graph[start]:
+            visited = self.spath(next,end,visited)
+        return visited[:-1]
+    
+
+    def all_Traversal(self):
+        for i in self.graph:
+            print('\n',i,':',sep = '')
+            self.Traversal(i)
+
 
     def path(self):
         for i in self.graph:
             for j in range(len(self.graph[i])):
                 print(i,self.graph[i][j],self.length[i][j],sep = '->')
             
-    def all_paths(self,start,visited = None,value = 0):
-        # print(visited)
+
+    def Traversal(self,start,visited = None):
         if visited is None:
             visited = []
+
         if start in visited:
             print(*visited,sep = '->')
-            print('length =',value)
-
-            # print('','start in visited condition','',sep ='\n')
             return visited
         else:
             visited.append(start)
+
         if start not in self.graph:
             print(*visited,sep = '->')
-            print('length =',value)
-            # print('start not in graph condition')
             visited = visited[:-1]
             return visited
+       
         for next in self.graph[start]:
-            visited = self.all_paths(next,visited)
+            visited = self.Traversal(next,visited)
         return visited[:-1]
